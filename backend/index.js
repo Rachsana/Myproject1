@@ -4,6 +4,7 @@ const helmet=require("helmet")
 const rateLimit=require("express-rate-limit")
 const dotenv=require("dotenv")
 const prisma=require("./utils/prismaClient")
+const authRoutes= require("./routes/auth")
 
 dotenv.config()
 
@@ -35,6 +36,7 @@ app.get("/",(req,res)=>{
     })
 })
 
+app.use("/auth",authRoutes)
 
 
 
