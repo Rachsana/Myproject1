@@ -4,7 +4,9 @@ const helmet=require("helmet")
 const rateLimit=require("express-rate-limit")
 const dotenv=require("dotenv")
 const prisma=require("./utils/prismaClient")
-const authRoutes= require("./routes/auth")
+const authRoutes = require("./routes/auth")
+const statsRoutes = require("./routes/stats")
+const userRoutes = require("./routes/user")
 const { startSyncService } = require("./services/syncService")
 
 dotenv.config()
@@ -23,7 +25,7 @@ prisma.$connect().then(()=> console.log("Databas Connected"))
 .catch((err)=> console.error("Database connection failed:",err.message))
 
 const limiter = rateLimit({
-    windows: 15*60* 1000,
+    windowMs: 15*60* 1000,
     max: 100,
     message: {error: "Too many requests, slow down"},
 })
@@ -37,8 +39,12 @@ app.get("/",(req,res)=>{
     })
 })
 
-app.use("/auth",authRoutes)
+app.use("/auth", authRoutes)
+app.use("/stats", statsRoutes)
+app.use("/user", userRoutes)
 
+const statsController = require("./controllers/statsController")
+app.get("/u/:username", statsController.getPublicProfile)
 
 
 app.use((err,req,res,next)=>{
