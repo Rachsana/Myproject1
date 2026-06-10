@@ -5,6 +5,7 @@ const rateLimit=require("express-rate-limit")
 const dotenv=require("dotenv")
 const prisma=require("./utils/prismaClient")
 const authRoutes= require("./routes/auth")
+const { startSyncService } = require("./services/syncService")
 
 dotenv.config()
 
@@ -45,6 +46,7 @@ app.use((err,req,res,next)=>{
     res.status(err.status || 500).json({ error: err.message || "Internal server error"})
 })
 
-app.listen(PORT,()=>{
-    console.log(`Server running on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+  startSyncService()
 })

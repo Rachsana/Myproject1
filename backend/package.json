@@ -13,11 +13,14 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^6.19.3",
+    "axios": "^1.17.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-rate-limit": "^8.5.2",
     "helmet": "^8.2.0",
+    "ioredis": "^5.11.1",
+    "node-cron": "^4.2.1",
     "prisma": "^6.19.3",
     "zod": "^4.4.3"
   },
