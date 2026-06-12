@@ -35,20 +35,26 @@ async function syncUser(userId) {
         })
       }
 
-      for (const sub of submissions) {
-        await prisma.submission.upsert({
-          where: {
-            userId_platform_problemId_solvedAt: {
-              userId,
-              platform: sub.platform,
-              problemId: sub.problemId,
-              solvedAt: sub.solvedAt,
-            },
-          },
-          update: {},
-          create: { userId, ...sub },
-        })
-      }
+for (const sub of submissions) {
+  try {
+    await prisma.submission.upsert({
+      where: {
+        userId_platform_problemId_solvedAt: {
+          userId,
+          platform: sub.platform,
+          problemId: sub.problemId,
+          solvedAt: sub.solvedAt,
+        },
+      },
+      update: {},
+      create: { userId, ...sub },
+    })
+  } catch (err) {
+    if (err.code !== "P2002") {
+      console.error("Submission save error:", err.message)
+    }
+  }
+}
 
       await redis.del(`stats:overview:${userId}`)
       await redis.del(`stats:heatmap:${userId}`)

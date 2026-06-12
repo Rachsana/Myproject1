@@ -46,7 +46,6 @@ app.use("/user", userRoutes)
 const statsController = require("./controllers/statsController")
 app.get("/u/:username", statsController.getPublicProfile)
 
-
 app.use((err,req,res,next)=>{
     console.error("Error:",err.message);
     res.status(err.status || 500).json({ error: err.message || "Internal server error"})
